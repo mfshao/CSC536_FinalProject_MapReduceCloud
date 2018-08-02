@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  zookeeper:
+      image: zookeeper:3.4.10
+      ports:
+        - "2181:2181"
+      container_name: service-discovery-zk
+
+  akka-cluster-sample-node-reducer1:
+    image: csc536_finalproject:1.0
+    environment:
+      - "ZK_IP=service-discovery-zk:2181"
+      - "CLUSTER_ROLE=reducer"
+    depends_on:
+      - "zookeeper"
+
+  akka-cluster-sample-node-reducer2:
+    image: csc536_finalproject:1.0
+    environment:
+      - "ZK_IP=service-discovery-zk:2181"
+      - "CLUSTER_ROLE=reducer"
+    depends_on:
+      - "zookeeper"
+
+  akka-cluster-sample-node-mapper1:
+    image: csc536_finalproject:1.0
+    environment:
+      - "ZK_IP=service-discovery-zk:2181"
+      - "CLUSTER_ROLE=mapper"
+    depends_on:
+      - "zookeeper"
+
+  akka-cluster-sample-node-mapper2:
+    image: csc536_finalproject:1.0
+    environment:
+      - "ZK_IP=service-discovery-zk:2181"
+      - "CLUSTER_ROLE=mapper"
+    depends_on:
+      - "zookeeper"
+
+  akka-cluster-sample-node-master:
+    image: csc536_finalproject:1.0
+    environment:
+      - "ZK_IP=service-discovery-zk:2181"
+      - "CLUSTER_ROLE=master"
+    depends_on:
+      - "zookeeper"
